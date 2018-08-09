@@ -1,0 +1,3320 @@
+{
+  "info": {
+    "_postman_id": "511962de-6336-474e-86ff-cf93d23fd451",
+    "name": "api_checkout_all",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "_postman_id": "a41dce70-c86a-4a5f-81a3-d4d5e858c526",
+      "name": "createOrder-us",
+      "description": "",
+      "item": [
+        {
+          "_postman_id": "2c98544d-468f-4890-a94b-9f3cb80e009a",
+          "name": "guest",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7c463991-f354-4fe6-b0dd-f6ac784b715e",
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"euserId\", jsonData.userId);",
+                  "",
+                  "pm.test(\"Session creation is success\" ,function () {",
+                  "     pm.response.to.have.status(200);",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "tests[\"User Id = \"+ jsonData.userId] = true;",
+                  "tests[\"Status = \"+ jsonData.status] = true;",
+                  "",
+                  "",
+                  "pm.test(\"Response time is less than 300ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {},
+            "url": {
+              "raw": "https://su-ecomwebqa01.abercrombie.com/api/ecomm/a-us/session/guest?cookieAuth=true",
+              "protocol": "https",
+              "host": [
+                "su-ecomwebqa01",
+                "abercrombie",
+                "com"
+              ],
+              "path": [
+                "api",
+                "ecomm",
+                "a-us",
+                "session",
+                "guest"
+              ],
+              "query": [
+                {
+                  "key": "store",
+                  "value": "a-us",
+                  "equals": true,
+                  "disabled": true
+                },
+                {
+                  "key": "cookieAuth",
+                  "value": "true",
+                  "equals": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "dd3dba1a-dd42-49a1-b9f5-29b772c44da4",
+          "name": "add Item to cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "bacd2cc2-830c-4c8e-a8df-d85a749edb3d",
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"a_orderId\", jsonData.orderId);",
+                  "pm.environment.set(\"a_orderItemId\", jsonData.items[0].orderItemId);",
+                  "pm.environment.set(\"a_shortSku\", jsonData.items[0].shortSku);",
+                  "pm.environment.set(\"a_itemId\", jsonData.items[0].item.itemId);",
+                  "",
+                  "pm.test(\"Add to cart successful\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "//tests[`Product ID = ${jsonData.items[0].productId}, Short Sku = ${jsonData.shortSku} and Sku Name = ${jsonData.name}`] = true;",
+                  "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                  "//var jsonData = pm.response.json();",
+                  "//pm.globals.set(\"gcartOrderItemId\", jsonData.items[0].orderItemId);",
+                  "//pm.globals.set(\"gshortsku\", jsonData.items[0].shortSku);",
+                  "",
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "e785cc82-7c52-4bc2-8e87-3eb3de7fba01",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shortSku\":\"626261413\",\n  \"quantity\":\"2\"\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/cart/items/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "58b12e7c-e0e0-4003-ba6d-250a8bfba4d3",
+          "name": "shipping&Billing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b328f51e-429f-40c4-a704-d37d87dd6b91",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Added Shipping & Billing address\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Cart PUT success\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"107 Assembly dr\",\n    \"address2\":\"\",\n    \"city\":\"New Albany\",\n    \"state\":\"OH\",\n    \"country\":\"US\",\n    \"postalCode\":\"43054\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"13755\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"JUpalli\",\n    \"address1\":\"107 Assembly dr\",\n    \"city\":\"New Albany\",\n    \"state\":\"OH\",\n    \"country\":\"US\",\n    \"postalCode\":\"43054\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert101@test.com\"\n  }\n} "
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/cart/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "a5d86edb-00e8-4ab7-8fa7-68998e93d21b",
+          "name": "apply GC to order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6f07a777-8a0e-4dd3-ac0f-b3a7295b3341",
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Giftcard applied to Order\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\":\"7777062794557541\",\n  \"balance\":10\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/cart/giftcard/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "007050a1-5a2e-413c-a30e-7323e76cd583",
+          "name": "OrderSubmit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0e8af2fd-99ca-498c-a647-f861f26d9829",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Payment Success\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Cart POST success\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"Success\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                  "tests[\"Order ID  = \"+ jsonData.orderId] = true;",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"610d8f50-47f8-402d-9d37-5fdd626da33c-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"3096fb86-cfed-4222-8c49-b756e374bb0e\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/cart/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "f284207e-9dee-4085-a2b2-a78bfdb1b8bb",
+          "name": "logoff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "61532a3c-8ad8-44a7-be80-272cef0a122b",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Session logoff success\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {},
+            "url": {
+              "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-us/session/?cookieAuth=true",
+              "protocol": "https",
+              "host": [
+                "{{env}}",
+                "abercrombie",
+                "com"
+              ],
+              "path": [
+                "api",
+                "ecomm",
+                "a-us",
+                "session",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "store",
+                  "value": "a-us",
+                  "equals": true,
+                  "disabled": true
+                },
+                {
+                  "key": "cookieAuth",
+                  "value": "true",
+                  "equals": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "_postman_id": "54c8cdf9-3fe3-45c2-a03a-14c2edcb9b7d",
+      "name": "createOrder-uk",
+      "description": "",
+      "item": [
+        {
+          "_postman_id": "f596ea1c-3f9c-48e6-894f-dd5fedeec062",
+          "name": "guest",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ec6782ee-6285-4367-87eb-ad236b842357",
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Guest user session established\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {},
+            "url": {
+              "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-uk/session/guest?cookieAuth=true",
+              "protocol": "https",
+              "host": [
+                "{{env}}",
+                "abercrombie",
+                "com"
+              ],
+              "path": [
+                "api",
+                "ecomm",
+                "a-uk",
+                "session",
+                "guest"
+              ],
+              "query": [
+                {
+                  "key": "store",
+                  "value": "a-us",
+                  "equals": true,
+                  "disabled": true
+                },
+                {
+                  "key": "cookieAuth",
+                  "value": "true",
+                  "equals": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "4dde0c7f-fa9a-4b0c-94d3-d45e53deedd1",
+          "name": "addItem to cart_uk",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "8c77456e-53d5-4e44-8ff6-a4a7a1e45bc2",
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Add to cart successful\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "cc037f74-869e-4509-963e-c4bfadd26c7e",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shortSku\":\"626731075\",\n  \"quantity\":\"1\"\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-uk/cart/items/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "551037ad-e035-4365-81f0-b92a09298138",
+          "name": "shipping&Billing-uk",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "5d7ddc42-17ac-47b4-a226-6d8c347aeac7",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Added Shipping & Billing address\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "pm.test(\"Ship method selected\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"107 Assembly dr\",\n    \"address2\":\"\",\n    \"city\":\"New Albany\",\n    \"state\":\"GB\",\n    \"country\":\"GB\",\n    \"postalCode\":\"55555\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"18806\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"JUpalli\",\n    \"address1\":\"107 Assembly dr\",\n    \"city\":\"New Albany\",\n    \"state\":\"GB\",\n    \"country\":\"GB\",\n    \"postalCode\":\"55555\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert101@test.com\"\n  }\n} "
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-uk/cart/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "2c0864c9-0ddb-4568-aa1c-615f6ad06a9e",
+          "name": "payment&OrderSubmit_uk",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2b6dde74-2606-46a8-ad8a-d34d82d46086",
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Payment Success\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Cart POST success\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"Success\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                  "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"610d8f50-47f8-402d-9d37-5fdd626da33c-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"3096fb86-cfed-4222-8c49-b756e374bb0e\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-uk/cart/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "d2445427-7587-470b-b9d2-4d952b6b9a98",
+          "name": "logoff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "058f19e6-93c5-4c2b-b933-527bea842023",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Session logoff success\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {},
+            "url": {
+              "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-uk/session/?cookieAuth=true",
+              "protocol": "https",
+              "host": [
+                "{{env}}",
+                "abercrombie",
+                "com"
+              ],
+              "path": [
+                "api",
+                "ecomm",
+                "a-uk",
+                "session",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "store",
+                  "value": "a-us",
+                  "equals": true,
+                  "disabled": true
+                },
+                {
+                  "key": "cookieAuth",
+                  "value": "true",
+                  "equals": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "_postman_id": "5accc531-e859-4f45-b30d-15dd698099a6",
+      "name": "createOrder-wd",
+      "description": "",
+      "item": [
+        {
+          "_postman_id": "4e3e7975-584f-4860-aa9b-500431d3aa4d",
+          "name": "au",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "3a88210b-6e00-4901-b41c-6fd4a685a6ab",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "78ce4bb9-f709-43fa-a0b5-f816e143188d",
+              "name": "add Item to cart-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "971f8792-39fc-4ff7-98ae-6703a79a4336",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "a88a93c8-12eb-46d3-aab3-4a7226019145",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"626623832\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "53859fc8-b6e7-40d1-97bb-defefb826d00",
+              "name": "shipping&Billing-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"145 Boundary St\",\n    \"address2\":\"\",\n    \"city\":\"West End\",\n    \"state\":\"AU\",\n    \"country\":\"AU\",\n    \"postalCode\":\"QLD 4101\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"22108\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"145 Boundary St\",\n    \"city\":\"West End\",\n    \"state\":\"AU\",\n    \"country\":\"AU\",\n    \"postalCode\":\"QLD 4101\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert101@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "9f6d2ae9-4be2-4fcd-80db-18182597b3c2",
+              "name": "applyGC to order-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "0fb60d69-23db-4d9b-80b1-85ddb28801c5",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Giftcard applied to Order\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cardNumber\":\"7777062794636967\",\n  \"balance\":10\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/giftcard/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "ccfe0065-911a-40ec-a852-20d32451d67e",
+              "name": "payment&OrderSubmit-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7e0c191f-d966-4dd4-a631-3296cbf2c028",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"5253e6cf-a8a8-4c36-8630-e2cda58fd287-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"3096fb86-cfed-4222-8c49-b756e374bb0e\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "8eb7ac49-c29e-4829-9ba1-689063e335dc",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "_postman_id": "664d935c-7490-43f1-a8fa-d0eb96400285",
+          "name": "in",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "ada20086-79a4-4785-a483-3fbb0385d90d",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "c1e8e209-09d7-416d-bd93-88e346f72aea",
+              "name": "add Item to cart-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "d8ee8b92-ce38-4bd7-9ddc-ef9aa71e0d89",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "03c87a2c-9a23-49a6-9ab0-8c14397685be",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"626623832\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "d8ea2d02-5277-400d-8b3d-6147c17dad3a",
+              "name": "shipping&Billing-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"04 Nest Mani enclave\",\n    \"address2\":\"JJ Nagar Colony\",\n    \"city\":\"Secunderabad\",\n    \"state\":\"IN\",\n    \"country\":\"IN\",\n    \"postalCode\":\"500087\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"13755\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"04 Nest Mani enclave\",\n    \"city\":\"Secunderabad\",\n    \"state\":\"IN\",\n    \"country\":\"IN\",\n    \"postalCode\":\"500087\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert101@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "8b665e32-60b1-4f6b-b177-ef7342199cec",
+              "name": "applyGC to order-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "0fb60d69-23db-4d9b-80b1-85ddb28801c5",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Giftcard applied to Order\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cardNumber\":\"7777062794636967\",\n  \"balance\":10\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/giftcard/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "f9d815e0-88ca-47b1-8ad8-d1aeb64bf308",
+              "name": "payment&OrderSubmit-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7d3f0410-bfa5-4fcf-b0bf-392e31abd600",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"5253e6cf-a8a8-4c36-8630-e2cda58fd287-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"3096fb86-cfed-4222-8c49-b756e374bb0e\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "cddc7be0-fe72-4890-8578-00fb006b0f8e",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "ba6b0014-f7c2-4793-92a7-bd091601c6fa",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "8abff366-a3bd-4853-9f83-d7f6e19b6733",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "_postman_id": "52aa2c64-add3-4793-aa3a-bdc1dcd5d541",
+          "name": "ru",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "0f40b9c8-d20b-4f86-b64f-6b6954f40e84",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "95e98765-8665-44a4-b824-ea1d36af46ea",
+              "name": "add Item to cart-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "f749b871-92d3-47eb-a03b-c630e1893e21",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "96d777a0-5179-4bad-83db-601e9027c318",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"626623832\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "0f65ab41-d974-4c77-87b6-b14352c3807e",
+              "name": "shipping&Billing-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Leninskiye Gory\",\n    \"address2\":\"\",\n    \"city\":\"Moskva\",\n    \"state\":\"RU\",\n    \"country\":\"RU\",\n    \"postalCode\":\"119991\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"13755\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Leninskiye Gory\",\n    \"city\":\"Moskva\",\n    \"state\":\"RU\",\n    \"country\":\"RU\",\n    \"postalCode\":\"119991\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert101@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "0a55c780-5e92-4821-aab4-45e99b3af4e2",
+              "name": "applyGC to order-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "0fb60d69-23db-4d9b-80b1-85ddb28801c5",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Giftcard applied to Order\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cardNumber\":\"7777062794636967\",\n  \"balance\":10\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/giftcard/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "46cf45fe-6953-43af-b37a-e0974d906abf",
+              "name": "payment&OrderSubmit-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4f4d3b08-ad0f-4b61-8598-4b1ae4d7f11a",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"5253e6cf-a8a8-4c36-8630-e2cda58fd287-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"3096fb86-cfed-4222-8c49-b756e374bb0e\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "c1aec94f-a328-4a30-9e1a-dbe80d75053c",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "ba6b0014-f7c2-4793-92a7-bd091601c6fa",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "8abff366-a3bd-4853-9f83-d7f6e19b6733",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "_postman_id": "eaa22ac9-9b54-4eb5-a2f9-3fa2a3731c50",
+          "name": "mx",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "fb719fdb-46a3-47e0-a243-081266fc0fcb",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "48c9d65c-8e44-49b8-a79c-223ee827eb31",
+              "name": "add Item to cart-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4e9ae21a-2d85-4028-a6ac-90b6879a06b0",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "70032ab6-7300-4b1c-a263-f3eb9ea470e7",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"626623832\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "90c57b25-40c3-4a7b-98fe-79449cc69d12",
+              "name": "shipping&Billing-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"3434 Jard\u00edn\",\n    \"address2\":\"Nuevo Laredo\",\n    \"city\":\"Tamps\",\n    \"state\":\"MX\",\n    \"country\":\"MX\",\n    \"postalCode\":\"88260\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"13755\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"3434 Jard\u00edn\",\n    \"city\":\"Tamps\",\n    \"state\":\"MX\",\n    \"country\":\"MX\",\n    \"postalCode\":\"882601\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert101@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "d1a5a2db-3471-4621-91da-a81c24035eb8",
+              "name": "applyGC to order-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "0fb60d69-23db-4d9b-80b1-85ddb28801c5",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Giftcard applied to Order\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cardNumber\":\"7777062794636967\",\n  \"balance\":10\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/giftcard/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "9ac3d847-c035-4995-bd80-50b38b402aa5",
+              "name": "payment&OrderSubmit-wd",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "3fb1905b-d701-44ce-8291-8775628c283d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"5253e6cf-a8a8-4c36-8630-e2cda58fd287-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"3096fb86-cfed-4222-8c49-b756e374bb0e\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "e323d5e7-6598-4f35-a65c-f3776f1ad90a",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-wd/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-wd",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_isSubFolder": true
+        }
+      ]
+    },
+    {
+      "_postman_id": "0e4a7504-9500-49f8-86bf-3b54f808ed9f",
+      "name": "createOrder-ca",
+      "description": "",
+      "item": [
+        {
+          "_postman_id": "44f83539-438a-4bf6-a6dd-13d6db8b7909",
+          "name": "guest",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Guest user session established\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {},
+            "url": {
+              "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-ca/session/guest?cookieAuth=true",
+              "protocol": "https",
+              "host": [
+                "{{env}}",
+                "abercrombie",
+                "com"
+              ],
+              "path": [
+                "api",
+                "ecomm",
+                "a-ca",
+                "session",
+                "guest"
+              ],
+              "query": [
+                {
+                  "key": "store",
+                  "value": "a-us",
+                  "equals": true,
+                  "disabled": true
+                },
+                {
+                  "key": "cookieAuth",
+                  "value": "true",
+                  "equals": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "a7890964-5a93-4a62-b280-e0f588dac239",
+          "name": "add Item to cart-ca",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "f1356b77-d06d-480e-9de8-a3644ba82a21",
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Add to cart successful\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                  "",
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "d1859263-f921-4885-b634-55fbda2d2eac",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shortSku\":\"628400552\",\n  \"quantity\":\"1\"\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-ca/cart/items/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "f5640c00-f5c8-494f-9df2-3e923dfc0eea",
+          "name": "shipping&Billing-ca",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Added Shipping & Billing address\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "pm.test(\"Ship method selected\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"99 University Ave\",\n    \"address2\":\"\",\n    \"city\":\"Kingston\",\n    \"state\":\"ON\",\n    \"country\":\"CA\",\n    \"postalCode\":\"K7L3N5\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"13755\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"JUpalli\",\n    \"address1\":\"99 University Ave\",\n    \"city\":\"Kingston\",\n    \"state\":\"ON\",\n    \"country\":\"CA\",\n    \"postalCode\":\"K7L3N5\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert01_ca@test.com\"\n  }\n} "
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-ca/cart/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "b75a63d8-e5af-4460-b45b-c1050ac58d4d",
+          "name": "applyGC to order-ca",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0fb60d69-23db-4d9b-80b1-85ddb28801c5",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Giftcard applied to Order\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\":\"7777062810357480\",\n  \"balance\":10\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-ca/cart/giftcard/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "65e8d20c-8dcd-4bc6-912f-e7940b04b1da",
+          "name": "payment&OrderSubmit-ca",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "f7732efa-212c-44df-b4e0-b90e137a47f7",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Payment Success\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Cart POST success\" ,function () {",
+                  "     pm.response.to.be.ok; ",
+                  "     pm.response.to.be.withBody;",
+                  "     pm.response.to.be.json;",
+                  "     pm.response.to.not.be.error; ",
+                  "     pm.response.to.have.jsonBody(\"Success\"); ",
+                  "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                  "});",
+                  "",
+                  "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                  "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"4916e4a4-5e8a-41b4-89e3-ded5b5095846-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"00385d41-792d-4fd9-9acc-2d336a927583\",\n      \"cardFirstSix\":\"545454\",\n      \"cardLastFour\":\"5454\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"02\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+            },
+            "url": "https://{{env}}.abercrombie.com/api/ecomm/a-ca/cart/"
+          },
+          "response": []
+        },
+        {
+          "_postman_id": "95cebfba-8c71-4a25-831d-fcc8cd9bcbf1",
+          "name": "logoff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Session logoff success\", function () {",
+                  "    pm.response.to.have.status(\"OK\");",
+                  "});",
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {},
+            "url": {
+              "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-ca/session/?cookieAuth=true",
+              "protocol": "https",
+              "host": [
+                "{{env}}",
+                "abercrombie",
+                "com"
+              ],
+              "path": [
+                "api",
+                "ecomm",
+                "a-ca",
+                "session",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "store",
+                  "value": "a-us",
+                  "equals": true,
+                  "disabled": true
+                },
+                {
+                  "key": "cookieAuth",
+                  "value": "true",
+                  "equals": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "_postman_id": "4e0dcfaa-ae6a-4fbc-897f-c6adc30a724e",
+      "name": "createOrder-eu",
+      "description": "",
+      "item": [
+        {
+          "_postman_id": "8b1c639d-99dd-4244-9b03-d46ca2d25dcd",
+          "name": "eu-germany",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "5a44ca29-1c21-4abf-a876-f8cff551af82",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "20eb27c2-8b2e-4c75-a875-9f23e1e23888",
+              "name": "add Item to cart-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "baa10b29-d264-44ed-bb67-a6e9509c9635",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "82fe2bb1-2f2f-4ddd-80f8-70ce7a43e7ee",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"631078357\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "bbba79df-2e5a-4def-abc8-038132b91523",
+              "name": "shipping&Billing-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Einsteinring 24\",\n    \"address2\":\"\",\n    \"city\":\"Aschheim\",\n    \"state\":\"DE\",\n    \"country\":\"DE\",\n    \"postalCode\":\"85609\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"18806\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Stadhouderskade 12\",\n    \"city\":\"Amsterdam\",\n    \"state\":\"NL\",\n    \"country\":\"NL\",\n    \"postalCode\":\"1054 ES\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert01_eu@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "e8378678-377e-430e-a346-564c7e31a7c8",
+              "name": "payment&OrderSubmit-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "9a717873-3d34-4bf3-82f8-1d117c79d6b9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"9b031240-70e1-41e4-8ca8-c4a5c814ed87-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"67964c44-d3fd-49da-902a-ff50d55e1d37\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "1eea55c2-a8d0-42ee-9716-4ad6a5c5df32",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "b6a38be6-bdd5-43e6-8627-1f6a7b19834b",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "0d1259cf-3f62-444a-b1a4-2f9dc3cb279f",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "_postman_id": "9a9e2f82-be94-4d86-8470-39cb907c6b0f",
+          "name": "eu-sweden",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "e92ca4c9-5514-41c0-a273-ee653d771cd3",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "27c230d1-07ad-4040-9722-61293963e170",
+              "name": "add Item to cart-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "04994184-a1c2-41d4-b753-98147198cecc",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "82493964-75a7-4e5b-a5e6-583ccd27a8ce",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"628400579\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "8d2a754a-b48f-46fd-8677-0729daa34dd4",
+              "name": "shipping&Billing-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Humleg\u00c2rden 10241\",\n    \"address2\":\"\",\n    \"city\":\"Stockholm\",\n    \"state\":\"SE\",\n    \"country\":\"SE\",\n    \"postalCode\":\"21127\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"18806\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Humleg\u00c2rden 10241\",\n    \"city\":\"Stockholm\",\n    \"state\":\"SE\",\n    \"country\":\"SE\",\n    \"postalCode\":\"21127\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert01_eu@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "1ce87392-5dea-485b-b046-b48b24aa9200",
+              "name": "payment&OrderSubmit-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "36a63ba3-8e42-4622-838e-7ab04c90822c",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"9b031240-70e1-41e4-8ca8-c4a5c814ed87-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"67964c44-d3fd-49da-902a-ff50d55e1d37\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "7c039579-c1a5-4bc1-b631-6abaa0a8d154",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "a83d7dc5-5e93-4ad4-ad52-a537f5fd72bb",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "03b1a2e1-a6ae-40d6-beb7-9bd5814dc26e",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "_postman_id": "4f5b4a95-4369-47fb-be7b-d8fc82a0e146",
+          "name": "eu-netherlands",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "75145d68-62d0-4d43-b30e-2b5439e8a38e",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "942df658-1e59-4707-98cd-4dff3b02da6a",
+              "name": "add Item to cart-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "67c55961-c7b4-4c3d-9d04-470bf4361b22",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "82493964-75a7-4e5b-a5e6-583ccd27a8ce",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"628400579\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "e0bffde6-23fe-4ded-b90a-612c9e32246e",
+              "name": "shipping&Billing-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Stadhouderskade 12\",\n    \"address2\":\"\",\n    \"city\":\"Amsterdam\",\n    \"state\":\"NL\",\n    \"country\":\"NL\",\n    \"postalCode\":\"1054 ES\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"18806\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"JUpalli\",\n    \"address1\":\"Stadhouderskade 12\",\n    \"city\":\"Amsterdam\",\n    \"state\":\"NL\",\n    \"country\":\"NL\",\n    \"postalCode\":\"1054 ES\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert01_eu@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "adb28c20-1166-4177-9ac1-2fce1cbf4322",
+              "name": "payment&OrderSubmit-eu",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4307995a-f401-4a46-9029-c2a69a06f82b",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"9b031240-70e1-41e4-8ca8-c4a5c814ed87-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"67964c44-d3fd-49da-902a-ff50d55e1d37\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "ab2b97b7-bcc3-42a2-9e5c-44176d9681fa",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "a83d7dc5-5e93-4ad4-ad52-a537f5fd72bb",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "03b1a2e1-a6ae-40d6-beb7-9bd5814dc26e",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "_postman_id": "9b93a8d4-054d-448f-8eae-3587d421a252",
+          "name": "eu-malta",
+          "description": "",
+          "item": [
+            {
+              "_postman_id": "988df998-d50a-40c7-8be4-ae5b484b9653",
+              "name": "guest",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1fa93ada-53d4-4369-8ab8-ebe76af60ce8",
+                    "type": "text/javascript",
+                    "exec": [
+                      "",
+                      "pm.test(\"Guest user session established\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/guest?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    "guest"
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "d0bba533-8576-4dc8-b8a4-dc1d591b6736",
+              "name": "add Item to cart-mt",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "67c55961-c7b4-4c3d-9d04-470bf4361b22",
+                    "type": "text/javascript",
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Add to cart successful\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "82493964-75a7-4e5b-a5e6-583ccd27a8ce",
+                    "type": "text/javascript",
+                    "exec": [
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shortSku\":\"628400579\",\n  \"quantity\":\"1\"\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/items/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "473c4a3a-b554-4668-b23a-30b48c36e9bf",
+              "name": "shipping&Billing-mt",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6de7e4c6-3a59-4356-b338-4c85b61fe3f9",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Added Shipping & Billing address\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "pm.test(\"Ship method selected\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "",
+                      "",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"Jupalli\",\n    \"address1\":\"Msida MSD\",\n    \"address2\":\"\",\n    \"city\":\"Malta\",\n    \"state\":\"MT\",\n    \"country\":\"MT\",\n    \"postalCode\":\"VLT 1117\",\n    \"poBox\":false\n  },\n  \"shipModeId\":\"18807\",\n  \"billingAddress\":{\n    \"firstName\":\"Ram\",\n    \"lastName\":\"JUpalli\",\n    \"address1\":\"Msida MSD 2080\",\n    \"city\":\"Malta\",\n    \"state\":\"MT\",\n    \"country\":\"MT\",\n    \"postalCode\":\"VLT 1117\",\n    \"poBox\":false,\n    \"phone\":\"2164445555\",\n    \"email\":\"cert01_eu@test.com\"\n  }\n} "
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "b3682d6d-2b71-4c6d-81b7-6600b017cdc3",
+              "name": "payment&OrderSubmit-mt",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4307995a-f401-4a46-9029-c2a69a06f82b",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Payment Success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Cart POST success\" ,function () {",
+                      "     pm.response.to.be.ok; ",
+                      "     pm.response.to.be.withBody;",
+                      "     pm.response.to.be.json;",
+                      "     pm.response.to.not.be.error; ",
+                      "     pm.response.to.have.jsonBody(\"Success\"); ",
+                      "     pm.response.to.not.have.jsonBody(\"error\"); ",
+                      "});",
+                      "",
+                      "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+                      "tests[\"Order ID  = \"+ jsonData.orderId] = true;"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment\":{\n    \"cardPayments\":[{\n      \"cardNumber\":\"9b031240-70e1-41e4-8ca8-c4a5c814ed87-1111\",\n      \"cardNumberType\":\"singleUseToken\",\n      \"encryptionId\":\"67964c44-d3fd-49da-902a-ff50d55e1d37\",\n      \"cardFirstSix\":\"411111\",\n      \"cardLastFour\":\"1111\",\n      \"paymentCode\":\"001\",\n      \"cardExpireMonth\":\"01\",\n      \"cardExpireYear\":\"2020\",\n      \"cvv\":\"123\",\n      \"savePayment\":false\n    }]\n  }\n}"
+                },
+                "url": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/cart/"
+              },
+              "response": []
+            },
+            {
+              "_postman_id": "f7641ff7-09e8-4ff6-b748-060117856ee4",
+              "name": "logoff",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2183db7f-7e53-46d6-85fd-a56620df3e1d",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Session logoff success\", function () {",
+                      "    pm.response.to.have.status(\"OK\");",
+                      "});",
+                      ""
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-eu/session/?cookieAuth=true",
+                  "protocol": "https",
+                  "host": [
+                    "{{env}}",
+                    "abercrombie",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "ecomm",
+                    "a-eu",
+                    "session",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "store",
+                      "value": "a-us",
+                      "equals": true,
+                      "disabled": true
+                    },
+                    {
+                      "key": "cookieAuth",
+                      "value": "true",
+                      "equals": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "a83d7dc5-5e93-4ad4-ad52-a537f5fd72bb",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "03b1a2e1-a6ae-40d6-beb7-9bd5814dc26e",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "bfbb610a-6ef9-4608-96c7-6f08d0d724a6",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "1a0efde8-7992-473f-b222-cdda27f3186e",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "f7a84eee-a4ce-4409-8f5d-747aaf536d56",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "b3d818e2-7e90-4aec-9fa9-803d44ea7e9d",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
