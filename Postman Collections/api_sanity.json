@@ -497,7 +497,6 @@
           "listen": "test",
           "script": {
             "id": "0dbb6e9e-0a46-4671-ad04-46976698ad1a",
-            "type": "text/javascript",
             "exec": [
               "",
               "var jsonData = pm.response.json();",
@@ -522,17 +521,18 @@
               "//pm.globals.set(\"gshortsku\", jsonData.items[0].shortSku);",
               "",
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         },
         {
           "listen": "prerequest",
           "script": {
             "id": "e785cc82-7c52-4bc2-8e87-3eb3de7fba01",
-            "type": "text/javascript",
             "exec": [
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -546,7 +546,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"shortSku\":\"631798311\",\n  \"quantity\":\"1\"\n}"
+          "raw": "{\n  \"shortSku\":\"625575226\",\n  \"quantity\":\"1\"\n}"
         },
         "url": "https://{{env}}.hollisterco.com/api/ecomm/h-us/cart/items/"
       },
@@ -696,57 +696,6 @@
     {
       "_postman_id": "1094132b-0108-4ece-9837-73f5a521d31a",
       "name": "hco_logoff",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "61532a3c-8ad8-44a7-be80-272cef0a122b",
-            "type": "text/javascript",
-            "exec": [
-              "pm.test(\"Session logoff success\", function () {",
-              "    pm.response.to.have.status(\"OK\");",
-              "});"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {},
-        "url": {
-          "raw": "https://{{env}}.hollisterco.com/api/ecomm/h-us/session/?cookieAuth=true",
-          "protocol": "https",
-          "host": [
-            "{{env}}",
-            "hollisterco",
-            "com"
-          ],
-          "path": [
-            "api",
-            "ecomm",
-            "h-us",
-            "session",
-            ""
-          ],
-          "query": [
-            {
-              "key": "store",
-              "value": "a-us",
-              "disabled": true
-            },
-            {
-              "key": "cookieAuth",
-              "value": "true"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "_postman_id": "75498eee-41bb-451c-8476-6170b64720e0",
-      "name": "hco_logoff Copy",
       "event": [
         {
           "listen": "test",
