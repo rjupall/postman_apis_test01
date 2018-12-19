@@ -372,57 +372,6 @@
       "response": []
     },
     {
-      "_postman_id": "e19563b0-d8bc-4c4a-97a3-c5a3757683c2",
-      "name": "anf-logoff Copy",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "61532a3c-8ad8-44a7-be80-272cef0a122b",
-            "type": "text/javascript",
-            "exec": [
-              "pm.test(\"Session logoff success\", function () {",
-              "    pm.response.to.have.status(\"OK\");",
-              "});"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {},
-        "url": {
-          "raw": "https://{{env}}.abercrombie.com/api/ecomm/a-us/session/?cookieAuth=true",
-          "protocol": "https",
-          "host": [
-            "{{env}}",
-            "abercrombie",
-            "com"
-          ],
-          "path": [
-            "api",
-            "ecomm",
-            "a-us",
-            "session",
-            ""
-          ],
-          "query": [
-            {
-              "key": "store",
-              "value": "a-us",
-              "disabled": true
-            },
-            {
-              "key": "cookieAuth",
-              "value": "true"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "_postman_id": "fcb392a0-34bb-4976-b5f0-0c42029c7d4e",
       "name": "hco-create-user",
       "event": [
