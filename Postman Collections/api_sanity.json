@@ -561,7 +561,6 @@
           "listen": "test",
           "script": {
             "id": "b328f51e-429f-40c4-a704-d37d87dd6b91",
-            "type": "text/javascript",
             "exec": [
               "pm.test(\"Added Shipping & Billing address\", function () {",
               "    pm.response.to.have.status(\"OK\");",
@@ -581,7 +580,8 @@
               "",
               "",
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -597,7 +597,7 @@
           "mode": "raw",
           "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"John\",\n    \"lastName\":\"Smith\",\n    \"address1\":\"5544 Test Rd\",\n    \"address2\":\"\",\n    \"email\":{{h_email}},\n    \"city\":\"New Albany\",\n    \"state\":\"OH\",\n    \"country\":\"US\",\n    \"postalCode\":\"43054\",\n    \"phone\":\"9090909090\"\n   },\n    \"billingAddressSameAsShipping\":true,\n    \"payment\":{\n      \"paymentType\":\"Venmo\"\n     }\n}"
         },
-        "url": "https://{{env}}.hollisterco.com/api/ecomm/h-us/cart/"
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/"
       },
       "response": []
     },
@@ -609,7 +609,6 @@
           "listen": "test",
           "script": {
             "id": "6f07a777-8a0e-4dd3-ac0f-b3a7295b3341",
-            "type": "text/javascript",
             "exec": [
               "",
               "var jsonData = pm.response.json();",
@@ -623,7 +622,8 @@
               "     pm.response.to.not.have.jsonBody(\"error\"); ",
               "});",
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -639,7 +639,7 @@
           "mode": "raw",
           "raw": "{\n  \"cardNumber\":\"7777062794710919\",\n  \"balance\":10\n}"
         },
-        "url": "https://{{env}}.hollisterco.com/api/ecomm/h-us/cart/giftcard/"
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/giftcard/"
       },
       "response": []
     },
@@ -651,7 +651,6 @@
           "listen": "test",
           "script": {
             "id": "b203bef2-da4f-4d7d-979a-d7ebeaa4b7ab",
-            "type": "text/javascript",
             "exec": [
               "var jsonData = pm.response.json();",
               "pm.environment.set(\"h_orderId\", jsonData.orderId);",
@@ -674,7 +673,8 @@
               "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
               "tests[\"Order ID  = \"+ jsonData.orderId] = true;",
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -690,7 +690,7 @@
           "mode": "raw",
           "raw": "{\n  \"payment\":{\n    \"venmoPayment\":{\n      \"paymentMethodNonce\":\"fake-venmo-account-nonce\",\n      \"deviceData\":\"abcde\"\n    }\n  }\n}"
         },
-        "url": "https://{{env}}.hollisterco.com/api/ecomm/h-us/cart/"
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/"
       },
       "response": []
     },
