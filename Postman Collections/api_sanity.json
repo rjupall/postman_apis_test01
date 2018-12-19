@@ -449,7 +449,6 @@
           "listen": "test",
           "script": {
             "id": "05efd817-fbed-4a42-95b3-b6e3e2ee809f",
-            "type": "text/javascript",
             "exec": [
               "",
               "var jsonData = pm.response.json();",
@@ -460,17 +459,18 @@
               "",
               "tests[\"user ID  = \"+ jsonData.userId] = true;",
               "tests[\"user email   = \"+ jsonData.email] = true;"
-            ]
+            ],
+            "type": "text/javascript"
           }
         },
         {
           "listen": "prerequest",
           "script": {
             "id": "dcd9308d-117a-4e40-a6e6-fc6c1806d6d7",
-            "type": "text/javascript",
             "exec": [
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -486,7 +486,7 @@
           "mode": "raw",
           "raw": "{\n  \"shortSku\": \"628396469\"\n}"
         },
-        "url": "https://{{env}}.hollisterco.com/api/ecomm/h-us/user/"
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/user/"
       },
       "response": []
     },
