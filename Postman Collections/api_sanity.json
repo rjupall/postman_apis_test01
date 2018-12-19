@@ -379,7 +379,6 @@
           "listen": "test",
           "script": {
             "id": "cdefa3b2-0f0d-4fc7-8086-ba993f79b9c4",
-            "type": "text/javascript",
             "exec": [
               "var jsonData = pm.response.json();",
               "pm.environment.set(\"h_userId\", jsonData.userId);",
@@ -399,7 +398,8 @@
               "});",
               "",
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -416,11 +416,11 @@
           "raw": "{\n  \"email\":\"hcoapitest_{{$randomInt}}{{$randomInt}}@test.com\",\n  \"firstName\":\"Hollister\",\n  \"lastName\":\"Test\",\n  \"password\":\"passw0rd\",\n  \"primaryPhone\":\"1111111111\",\n  \"origin\":\"POS\",\n  \"cashierID\":\"12345\",\n  \"preference\":{\n   \"preferredStore\":\"30127\"\n  }\n}"
         },
         "url": {
-          "raw": "https://{{env}}.hollisterco.com/api/ecomm/h-us/user/?cookieAuth=true",
+          "raw": "https://{{env}}.abercrombie.com/api/ecomm/h-us/user/?cookieAuth=true",
           "protocol": "https",
           "host": [
             "{{env}}",
-            "hollisterco",
+            "abercrombie",
             "com"
           ],
           "path": [
@@ -433,7 +433,8 @@
           "query": [
             {
               "key": "cookieAuth",
-              "value": "true"
+              "value": "true",
+              "equals": true
             }
           ]
         }
