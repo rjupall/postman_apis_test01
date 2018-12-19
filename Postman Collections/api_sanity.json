@@ -144,7 +144,6 @@
           "listen": "test",
           "script": {
             "id": "3a5d7950-b594-4762-9974-2d1af8f1e5f1",
-            "type": "text/javascript",
             "exec": [
               "",
               "var jsonData = pm.response.json();",
@@ -169,17 +168,18 @@
               "//pm.globals.set(\"gshortsku\", jsonData.items[0].shortSku);",
               "",
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         },
         {
           "listen": "prerequest",
           "script": {
             "id": "e785cc82-7c52-4bc2-8e87-3eb3de7fba01",
-            "type": "text/javascript",
             "exec": [
               ""
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -193,7 +193,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"shortSku\":\"628400579\",\n  \"quantity\":\"1\"\n}"
+          "raw": "{\n  \"shortSku\":\"628712185\",\n  \"quantity\":\"1\"\n}"
         },
         "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/cart/items/"
       },
