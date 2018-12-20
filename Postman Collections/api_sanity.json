@@ -6,6 +6,117 @@
   },
   "item": [
     {
+      "_postman_id": "3bf9a238-0252-421f-94cb-21070f5c53ce",
+      "name": "hco_add Item to cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "0dbb6e9e-0a46-4671-ad04-46976698ad1a",
+            "exec": [
+              "",
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"h_orderId\", jsonData.orderId);",
+              "pm.environment.set(\"h_orderItemId\", jsonData.items[0].orderItemId);",
+              "pm.environment.set(\"h_shortSku\", jsonData.items[0].shortSku);",
+              "pm.environment.set(\"h_itemId\", jsonData.items[0].item.itemId);",
+              "",
+              "pm.test(\"Add to cart successful\" ,function () {",
+              "     pm.response.to.be.ok; ",
+              "     pm.response.to.be.withBody;",
+              "     pm.response.to.be.json;",
+              "     pm.response.to.not.be.error; ",
+              "     pm.response.to.have.jsonBody(\"\"); ",
+              "     pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});",
+              "",
+              "//tests[`Product ID = ${jsonData.items[0].productId}, Short Sku = ${jsonData.shortSku} and Sku Name = ${jsonData.name}`] = true;",
+              "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
+              "//var jsonData = pm.response.json();",
+              "//pm.globals.set(\"gcartOrderItemId\", jsonData.items[0].orderItemId);",
+              "//pm.globals.set(\"gshortsku\", jsonData.items[0].shortSku);",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "e785cc82-7c52-4bc2-8e87-3eb3de7fba01",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"shortSku\":\"625575226\",\n  \"quantity\":\"1\"\n}"
+        },
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/items/"
+      },
+      "response": []
+    },
+    {
+      "_postman_id": "b29177f4-d2a3-47f1-9cc9-8d0773b5f5c2",
+      "name": "hco_shipping&Billing",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b328f51e-429f-40c4-a704-d37d87dd6b91",
+            "exec": [
+              "pm.test(\"Added Shipping & Billing address\", function () {",
+              "    pm.response.to.have.status(\"OK\");",
+              "});",
+              "",
+              "var jsonData = pm.response.json();",
+              "",
+              "pm.test(\"Cart PUT success\" ,function () {",
+              "     pm.response.to.be.ok; ",
+              "     pm.response.to.be.withBody;",
+              "     pm.response.to.be.json;",
+              "     pm.response.to.not.be.error; ",
+              "     pm.response.to.have.jsonBody(\"\"); ",
+              "     pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});",
+              "",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"shippingAddress\":{\n    \"firstName\":\"John\",\n    \"lastName\":\"Smith\",\n    \"address1\":\"5544 Test Rd\",\n    \"address2\":\"\",\n    \"email\":{{h_email}},\n    \"city\":\"New Albany\",\n    \"state\":\"OH\",\n    \"country\":\"US\",\n    \"postalCode\":\"43054\",\n    \"phone\":\"9090909090\"\n   },\n    \"billingAddressSameAsShipping\":true,\n    \"payment\":{\n      \"paymentType\":\"Venmo\"\n     }\n}"
+        },
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/"
+      },
+      "response": []
+    },
+    {
       "_postman_id": "3040d971-3ca8-42ec-bb7a-3a8761667984",
       "name": "hco_orderSubmit",
       "event": [
