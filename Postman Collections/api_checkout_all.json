@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "511962de-6336-474e-86ff-cf93d23fd451",
-    "name": "api_checkout_all",
+    "name": "api_v7_checkout_all",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
   "item": [
