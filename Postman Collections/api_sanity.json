@@ -6,57 +6,6 @@
   },
   "item": [
     {
-      "_postman_id": "11db0dd6-241e-42c9-95ee-c29a1563861b",
-      "name": "anf-userdetails",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "9aeed431-5305-481b-8bff-5addb33ae766",
-            "type": "text/javascript",
-            "exec": [
-              "",
-              "var jsonData = pm.response.json();",
-              "pm.environment.set(\"a_userId\", jsonData.userId);",
-              "pm.environment.set(\"a_email\", jsonData.email);",
-              "pm.environment.set(\"a_login\", jsonData.email);",
-              "pm.environment.set(\"a_pstore\", jsonData.preference.preferredStore);",
-              "",
-              "tests[\"user ID  = \"+ jsonData.userId] = true;",
-              "tests[\"user email   = \"+ jsonData.email] = true;",
-              "",
-              ""
-            ]
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "id": "dcd9308d-117a-4e40-a6e6-fc6c1806d6d7",
-            "type": "text/javascript",
-            "exec": [
-              ""
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"shortSku\": \"628396469\"\n}"
-        },
-        "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/user/"
-      },
-      "response": []
-    },
-    {
       "_postman_id": "a391a498-dbd6-4fae-bb84-cc31317add2e",
       "name": "add Item to cart",
       "event": [
