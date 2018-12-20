@@ -6,6 +6,57 @@
   },
   "item": [
     {
+      "_postman_id": "3040d971-3ca8-42ec-bb7a-3a8761667984",
+      "name": "hco_orderSubmit",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b203bef2-da4f-4d7d-979a-d7ebeaa4b7ab",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"h_orderId\", jsonData.orderId);",
+              "",
+              "pm.test(\"Payment Success\", function () {",
+              "    pm.response.to.have.status(\"OK\");",
+              "});",
+              "",
+              "var jsonData = pm.response.json();",
+              "",
+              "pm.test(\"Cart POST success\" ,function () {",
+              "     pm.response.to.be.ok; ",
+              "     pm.response.to.be.withBody;",
+              "     pm.response.to.be.json;",
+              "     pm.response.to.not.be.error; ",
+              "     pm.response.to.have.jsonBody(\"Success\"); ",
+              "     pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});",
+              "",
+              "tests[\"Order submit response code  = \"+ jsonData.responseCode] = true;",
+              "tests[\"Order ID  = \"+ jsonData.orderId] = true;",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"payment\":{\n    \"venmoPayment\":{\n      \"paymentMethodNonce\":\"fake-venmo-account-nonce\",\n      \"deviceData\":\"abcde\"\n    }\n  }\n}"
+        },
+        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/"
+      },
+      "response": []
+    },
+    {
       "_postman_id": "1094132b-0108-4ece-9837-73f5a521d31a",
       "name": "hco_logoff",
       "event": [
