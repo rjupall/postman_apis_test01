@@ -6,69 +6,6 @@
   },
   "item": [
     {
-      "_postman_id": "a391a498-dbd6-4fae-bb84-cc31317add2e",
-      "name": "add Item to cart",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "3a5d7950-b594-4762-9974-2d1af8f1e5f1",
-            "exec": [
-              "",
-              "var jsonData = pm.response.json();",
-              "pm.environment.set(\"a_orderId\", jsonData.orderId);",
-              "pm.environment.set(\"a_orderItemId\", jsonData.items[0].orderItemId);",
-              "pm.environment.set(\"a_shortSku\", jsonData.items[0].shortSku);",
-              "pm.environment.set(\"a_itemId\", jsonData.items[0].item.itemId);",
-              "",
-              "pm.test(\"Add to cart successful\" ,function () {",
-              "     pm.response.to.be.ok; ",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json;",
-              "     pm.response.to.not.be.error; ",
-              "     pm.response.to.have.jsonBody(\"\"); ",
-              "     pm.response.to.not.have.jsonBody(\"error\"); ",
-              "});",
-              "",
-              "//tests[`Product ID = ${jsonData.items[0].productId}, Short Sku = ${jsonData.shortSku} and Sku Name = ${jsonData.name}`] = true;",
-              "tests[\"Sku added  = \"+ jsonData.items[0].shortSku] = true;",
-              "//var jsonData = pm.response.json();",
-              "//pm.globals.set(\"gcartOrderItemId\", jsonData.items[0].orderItemId);",
-              "//pm.globals.set(\"gshortsku\", jsonData.items[0].shortSku);",
-              "",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "id": "e785cc82-7c52-4bc2-8e87-3eb3de7fba01",
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"shortSku\":\"628712185\",\n  \"quantity\":\"1\"\n}"
-        },
-        "url": "https://{{env}}.abercrombie.com/api/ecomm/a-us/cart/items/"
-      },
-      "response": []
-    },
-    {
       "_postman_id": "01272982-e50d-4c90-a47a-cb06bf28158f",
       "name": "shipping&Billing",
       "event": [
