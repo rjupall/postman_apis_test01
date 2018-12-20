@@ -602,48 +602,6 @@
       "response": []
     },
     {
-      "_postman_id": "e1b45cba-2223-4ef5-87b7-dae3a9c51ca3",
-      "name": "hco_apply GC to order",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "6f07a777-8a0e-4dd3-ac0f-b3a7295b3341",
-            "exec": [
-              "",
-              "var jsonData = pm.response.json();",
-              "",
-              "pm.test(\"Giftcard applied to Order\" ,function () {",
-              "     pm.response.to.be.ok; ",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json;",
-              "     pm.response.to.not.be.error; ",
-              "     pm.response.to.have.jsonBody(\"\"); ",
-              "     pm.response.to.not.have.jsonBody(\"error\"); ",
-              "});",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"cardNumber\":\"7777062794710919\",\n  \"balance\":10\n}"
-        },
-        "url": "https://{{env}}.abercrombie.com/api/ecomm/h-us/cart/giftcard/"
-      },
-      "response": []
-    },
-    {
       "_postman_id": "3040d971-3ca8-42ec-bb7a-3a8761667984",
       "name": "hco_orderSubmit",
       "event": [
@@ -702,12 +660,12 @@
           "listen": "test",
           "script": {
             "id": "61532a3c-8ad8-44a7-be80-272cef0a122b",
-            "type": "text/javascript",
             "exec": [
               "pm.test(\"Session logoff success\", function () {",
               "    pm.response.to.have.status(\"OK\");",
               "});"
-            ]
+            ],
+            "type": "text/javascript"
           }
         }
       ],
@@ -716,11 +674,11 @@
         "header": [],
         "body": {},
         "url": {
-          "raw": "https://{{env}}.hollisterco.com/api/ecomm/h-us/session/?cookieAuth=true",
+          "raw": "https://{{env}}.abercrombie.com/api/ecomm/h-us/session/?cookieAuth=true",
           "protocol": "https",
           "host": [
             "{{env}}",
-            "hollisterco",
+            "abercrombie",
             "com"
           ],
           "path": [
@@ -738,7 +696,8 @@
             },
             {
               "key": "cookieAuth",
-              "value": "true"
+              "value": "true",
+              "equals": true
             }
           ]
         }
